@@ -1,0 +1,137 @@
+#include <iostream>
+#include <math.h>
+#include <vector>
+#include <Windows.h>
+#include <conio.h>
+#include <stdio.h>
+//svod pechi
+using namespace std;
+
+int main()
+{
+	float t, t_cp, t_dna, lambda_b, lambda_shl, lambda_shb, r_b, r_shl, r_shb, r_sum, alfa_k, alfa_izl, alfa_sum, k, t_b, t_shl, t_cp_b, t_cp_shl, t_cp_shb;
+
+	setlocale(LC_ALL, "Russian");
+	cout << "введите T " << endl;
+	cin >> t;
+	cout << "Задаемся температурой " << endl;
+	cin >> t_dna;
+	float temp = 0;
+	int iter = 0;
+
+	//0 oter
+	t_cp_b = (t + 60) / 2;
+	cout << iter << ")" << "Ср.Температура динаса " << t_cp_b << endl;
+
+	t_cp_shl = (t + 60) / 2;
+	cout << iter << ")" << "Ср.Температура кварцевого песка " << t_cp_shl << endl;
+
+	t_cp_shb = (t + 60) / 2;
+	cout << iter << ")" << "Ср.Температура вермикулита " << t_cp_shb << endl;
+
+
+	lambda_b = 1.070 + 93 * pow(10, -5) * t_cp_b;
+	cout << iter << ")" << "Лямбда динаса " << lambda_b << endl;
+
+	lambda_shl = 1.88 + 4.2 * pow(10, -5) * t_cp_shl;
+	cout << iter << ")" << "Лямбда кварцевого песка " << lambda_shl << endl;
+
+	lambda_shb = 0.085 + 21 * pow(10, -5) * t_cp_shb;
+	cout << iter << ")" << "Лямбда вермикулита " << lambda_shb << endl;
+
+	r_b = 0.35 / lambda_b;
+	cout << iter << ")" << "Р динаса " << r_b << endl;
+
+	r_shl = 0.03 / lambda_shl;
+	cout << iter << ")" << "Р кварцевого песка " << r_shl << endl;
+
+	r_shb = 0.15 / lambda_shb;
+	cout << iter << ")" << "Р вермикулита " << r_shb << endl;
+
+	r_sum = r_b + r_shl + r_shb;
+	cout << iter << ")" << "Р суммарное " << r_sum << endl;
+
+	alfa_k = 3.3 * pow((t_dna - 60), 0.25);
+	cout << iter << ")" << "Альфа К " << alfa_k << endl;
+
+	alfa_izl = 4.6 / (t_dna - 60) * (pow(((t_dna + 273) / 100), 4) - pow(((60 + 273) / 100), 4));
+	cout << iter << ")" << "Альфа излучения " << alfa_izl << endl;
+
+	alfa_sum = alfa_k + alfa_izl;
+	cout << iter << ")" << "Альфа суммарное " << alfa_sum << endl;
+
+	k = 1 / (1 / alfa_sum + r_sum);
+	cout << iter << ")" << "К " << k << endl;
+
+	t_b = t - k * r_b * (t - 60);
+	cout << iter << ")" << "Температура динаса " << t_b << endl;
+
+	t_shl = t - k * (r_shl + r_b) * (t - 60);
+	cout << iter << ")" << "Температура кварцевого песка " << t_shl << endl;
+
+	t_dna = t - k * r_sum * (t - 60);
+	cout << iter << ")" << "Температура вермикулита " << t_dna << endl;
+
+	iter++;
+	//1-? iter
+
+	while (abs(temp - t_dna) > 5)
+	{
+		temp = t_dna;
+
+		t_cp_b = (t + t_b) / 2;
+		cout << iter << ")" << "Ср.Температура динаса " << t_cp_b << endl;
+
+		t_cp_shl = (t_b + t_shl) / 2;
+		cout << iter << ")" << "Ср.Температура кварцевого песка " << t_cp_shl << endl;
+
+		t_cp_shb = (t_shl + t_dna) / 2;
+		cout << iter << ")" << "Ср.Температура вермикулита " << t_cp_shb << endl;
+
+        lambda_b = 1.070 + 93 * pow(10, -5) * t_cp_b;
+        cout << iter << ")" << "Лямбда динаса " << lambda_b << endl;
+
+        lambda_shl = 1.88 + 4.2 * pow(10, -5) * t_cp_shl;
+        cout << iter << ")" << "Лямбда кварцевого песка " << lambda_shl << endl;
+
+        lambda_shb = 0.085 + 21 * pow(10, -5) * t_cp_shb;
+        cout << iter << ")" << "Лямбда вермикулита " << lambda_shb << endl;
+
+        r_b = 0.35 / lambda_b;
+        cout << iter << ")" << "Р динаса " << r_b << endl;
+
+        r_shl = 0.03 / lambda_shl;
+        cout << iter << ")" << "Р кварцевого песка " << r_shl << endl;
+
+        r_shb = 0.15 / lambda_shb;
+        cout << iter << ")" << "Р вермикулита " << r_shb << endl;
+
+        r_sum = r_b + r_shl + r_shb;
+        cout << iter << ")" << "Р суммарное " << r_sum << endl;
+
+        alfa_k = 3.3 * pow((t_dna - 60), 0.25);
+        cout << iter << ")" << "Альфа К " << alfa_k << endl;
+
+        alfa_izl = 4.6 / (t_dna - 60) * (pow(((t_dna + 273) / 100), 4) - pow(((60 + 273) / 100), 4));
+        cout << iter << ")" << "Альфа излучения " << alfa_izl << endl;
+
+        alfa_sum = alfa_k + alfa_izl;
+        cout << iter << ")" << "Альфа суммарное " << alfa_sum << endl;
+
+        k = 1 / (1 / alfa_sum + r_sum);
+        cout << iter << ")" << "К " << k << endl;
+
+        t_b = t - k * r_b * (t - 60);
+        cout << iter << ")" << "Температура динаса " << t_b << endl;
+
+        t_shl = t - k * (r_shl + r_b) * (t - 60);
+        cout << iter << ")" << "Температура кварцевого песка " << t_shl << endl;
+
+        t_dna = t - k * r_sum * (t - 60);
+        cout << iter << ")" << "Температура вермикулита " << t_dna << endl;
+
+        iter++;
+	}
+	cout << iter << endl;
+	system("PAUSE");
+}
